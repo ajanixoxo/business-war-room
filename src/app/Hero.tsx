@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="mt-20 md:mt-0 relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url("/hero-background.jpg")' }}></div>
       <div className="absolute inset-0 bg-gradient-hero opacity-90"></div>
       <div className="absolute inset-0 opacity-10">
@@ -14,7 +14,7 @@ export default function Hero() {
             <Image src="/Logo.png" alt="Business War Room Logo" width={40} height={40} className="h-10 w-10" />
             <span className="text-accent font-semibold tracking-wide uppercase font-eukraine-regular">Strategic Command Centre</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-extrabold text-foreground mb-6 leading-tight font-eukraine-regular">Transform Business<span className="block text-accent animate-command-pulse font-eukraine-regular">Battles Into Wins</span></h1>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-6 leading-tight font-eukraine-regular">Transform Business<span className="block text-accent animate-command-pulse font-eukraine-regular">Battles Into Wins</span></h1>
           <p className="text-base md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed font-eukraine-light">
             Battle-tested strategies for startups and growing businesses. We don&apos;t just give advice—we deliver war-tested frameworks that drive<span className="text-accent font-semibold font-eukraine-light"> users and revenue</span>.
           </p>
@@ -27,18 +27,18 @@ export default function Hero() {
               View Battle Plans
             </button>
           </div>
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div className="mt-12 grid grid-cols-2 content-center place-items-center md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             <div className="text-center">
               <div className="text-3xl font-bold text-accent mb-2 font-eukraine-light">500+</div>
-              <div className=" text-sm text-muted-foreground font-eukraine-light">Battles Won</div>
+              <div className="text-sm text-muted-foreground font-eukraine-light">Battles Won</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-accent mb-2 font-eukraine-light">$2M+</div>
-              <div className=" text-sm text-muted-foreground font-eukraine-light">Revenue Generated</div>
+              <div className="text-sm text-muted-foreground font-eukraine-light">Revenue Generated</div>
             </div>
-            <div className="text-center">
+            <div className="text-center col-span-2 md:col-span-1">
               <div className="text-3xl font-bold text-accent mb-2 font-eukraine-light">98%</div>
-              <div className=" text-sm text-muted-foreground font-eukraine-light">Client Success Rate</div>
+              <div className="text-sm text-muted-foreground font-eukraine-light">Client Success Rate</div>
             </div>
           </div>
         </div>
