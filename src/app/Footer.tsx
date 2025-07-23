@@ -44,7 +44,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-border mt-8 pt-8 text-center">
-          <p className="text-xs text-muted-foreground font-eukraine-">Ready to dominate your market? <a href="#contact" className="text-accent hover:underline">Enter the War Room</a></p>
+          <p className="text-xs text-muted-foreground font-eukraine-">Ready to dominate your market? <a href="https://forms.gle/qH5DFWGTrdNMxuDx7" className="text-accent hover:underline">Enter the War Room</a></p>
         </div>
       </div>
     </footer>

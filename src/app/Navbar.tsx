@@ -18,10 +18,10 @@ export default function Navbar() {
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-6">
-            <Link href='#about' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Strategy</Link>
+            <Link href='#about' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Blog</Link>
             <Link href='#services' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Services</Link>
             <Link href='#contact' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Contact</Link>
-            <Link href='#contact' className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-10 px-4 py-2 font-eukraine-regular">Enter War Room</Link>
+            <a href='https://forms.gle/qH5DFWGTrdNMxuDx7' className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-10 px-4 py-2 font-eukraine-regular">Enter War Room</a>
           </div>
           {/* Hamburger menu for mobile */}
           <div className="md:hidden flex items-center">
@@ -39,10 +39,10 @@ export default function Navbar() {
         {/* Mobile menu dropdown */}
         {menuOpen && (
           <div id="mobile-menu" className="md:hidden mt-4 bg-background rounded-lg shadow-lg p-4 flex flex-col space-y-4 animate-tactical-slide text-sm">
-            <Link href="#about" className="text-foreground hover:text-accent transition-colors font-eukraine-regular  text-left text-sm">Strategy</Link>
+            <Link href="#about" className="text-foreground hover:text-accent transition-colors font-eukraine-regular  text-left text-sm">Blog</Link>
             <Link href="#services" className="text-foreground hover:text-accent transition-colors font-eukraine-regular  text-left text-sm">Services</Link>
             <Link href="#contact" className="text-foreground hover:text-accent transition-colors font-eukraine-regular  text-left text-sm">Contact</Link>
-            <Link href="#contact" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium t ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-10 px-4 py-2 font-eukraine-regular">Enter War Room</Link>
+            <a href="https://forms.gle/qH5DFWGTrdNMxuDx7" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium t ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-10 px-4 py-2 font-eukraine-regular">Enter War Room</a>
           </div>
         )}
       </div>
