@@ -12,16 +12,18 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Image src="/Logo.png" alt="Business War Room Logo" width={40} height={40} className="h-10 w-10" />
-            <div>
+            <div className="text-center">
               <h1 className="text-xl font-bold text-foreground font-eukraine-regular">Business War Room</h1>
               <p className="text-sm text-muted-foreground font-eukraine-light">with Balogun</p>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-6">
-            <Link href='#about' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Blog</Link>
-            <Link href='#services' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Services</Link>
-            <Link href='#contact' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Contact</Link>
+            <Link href='/#about' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Blog</Link>
+            <Link href='/#services' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Services</Link>
+            <Link href='/blog' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Intel</Link>
+            <Link href='/#contact' className="text-foreground hover:text-accent transition-colors font-eukraine-regular">Contact</Link>
             <a href='https://forms.gle/qH5DFWGTrdNMxuDx7' className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-10 px-4 py-2 font-eukraine-regular">Enter War Room</a>
+            
           </div>
           {/* Hamburger menu for mobile */}
           <div className="md:hidden flex items-center">
