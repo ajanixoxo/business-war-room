@@ -1,13 +1,14 @@
 import { create } from "zustand"
 import { devtools, persist } from "zustand/middleware"
 import { supabase } from "@/lib/supabase"
-import type { BlogPost, Category, User } from "@/lib/supabase"
+import type { BlogPost, BlogPostWithAuthor, User } from "@/lib/supabase"
+import type { Category } from "@/lib/supabase"
 
 interface BlogState {
   // Data
-  posts: BlogPost[]
+  posts: BlogPostWithAuthor[]
   categories: Category[]
-  featuredPosts: BlogPost[]
+  featuredPosts: BlogPostWithAuthor[]
   currentUser: User | null
 
   // Loading states
@@ -46,7 +47,7 @@ export const useBlogStore = create<BlogState>()(
         lastFetched: null,
 
         // Fetch all posts with caching
-        fetchPosts: async () => {
+        fetchPosts: async (): Promise<void> => {
           const now = Date.now()
           const { lastFetched } = get()
 
@@ -69,7 +70,7 @@ export const useBlogStore = create<BlogState>()(
             if (error) throw error
 
             set({
-              posts: data || [],
+              posts: (data || []) as BlogPostWithAuthor[],
               lastFetched: now,
               isLoading: false,
             })
@@ -80,7 +81,7 @@ export const useBlogStore = create<BlogState>()(
         },
 
         // Fetch categories
-        fetchCategories: async () => {
+        fetchCategories: async (): Promise<void> => {
           try {
             const { data, error } = await supabase.from("categories").select("*").order("name")
 
@@ -93,7 +94,7 @@ export const useBlogStore = create<BlogState>()(
         },
 
         // Fetch featured posts
-        fetchFeaturedPosts: async () => {
+        fetchFeaturedPosts: async (): Promise<void> => {
           try {
             const { data, error } = await supabase
               .from("posts")
@@ -108,14 +109,14 @@ export const useBlogStore = create<BlogState>()(
 
             if (error) throw error
 
-            set({ featuredPosts: data || [] })
+            set({ featuredPosts: (data || []) as BlogPostWithAuthor[] })
           } catch (error) {
             console.error("Error fetching featured posts:", error)
           }
         },
 
         // Create new post
-        createPost: async (postData) => {
+        createPost: async (postData: Omit<BlogPost, "id" | "created_at" | "updated_at">): Promise<BlogPost> => {
           set({ isCreating: true })
 
           try {
@@ -132,11 +133,11 @@ export const useBlogStore = create<BlogState>()(
               throw new Error(errorData.error || "Failed to create post")
             }
 
-            const data = await response.json()
+            const data: BlogPost = await response.json()
 
             // Update local state
             set((state) => ({
-              posts: [data, ...state.posts],
+              posts: [data as BlogPostWithAuthor, ...state.posts],
               isCreating: false,
             }))
 
@@ -148,7 +149,7 @@ export const useBlogStore = create<BlogState>()(
         },
 
         // Update post
-        updatePost: async (id, updates) => {
+        updatePost: async (id: string, updates: Partial<BlogPost>): Promise<BlogPost> => {
           set({ isUpdating: true })
 
           try {
@@ -174,11 +175,11 @@ export const useBlogStore = create<BlogState>()(
               throw new Error(errorData.error || "Failed to update post")
             }
 
-            const data = await response.json()
+            const data: BlogPost = await response.json()
 
             // Update local state
             set((state) => ({
-              posts: state.posts.map((post) => (post.id === id ? data : post)),
+              posts: state.posts.map((post) => (post.id === id ? (data as BlogPostWithAuthor) : post)),
               isUpdating: false,
             }))
 
@@ -190,7 +191,7 @@ export const useBlogStore = create<BlogState>()(
         },
 
         // Delete post
-        deletePost: async (id) => {
+        deletePost: async (id: string): Promise<void> => {
           set({ isDeleting: true })
 
           try {
@@ -227,12 +228,12 @@ export const useBlogStore = create<BlogState>()(
         },
 
         // Set current user
-        setCurrentUser: (user) => {
+        setCurrentUser: (user: User | null): void => {
           set({ currentUser: user })
         },
 
         // Invalidate cache
-        invalidateCache: () => {
+        invalidateCache: (): void => {
           set({ lastFetched: null })
         },
       }),

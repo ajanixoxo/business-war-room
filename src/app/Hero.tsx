@@ -11,14 +11,17 @@ export default function Hero() {
       <div className="relative z-10 container mx-auto px-6 text-center">
         <div className="max-w-4xl mx-auto animate-tactical-slide">
           <div className="flex items-center justify-center space-x-3 mb-6">
-            <Image src="/Logo.png" alt="Business War Room Logo" width={40} height={40} className="h-10 w-10" />
+            <div className="relative p-1 rounded-full border animate-target-lock border-accent">
+            <Image src="/Logo.png" alt="Business War Room Logo" width={40} height={40} className="h-10 w-10 animate-[spin_0.5s_linear_infinite]" />
+
+            </div>
             <span className="text-accent font-semibold tracking-wide uppercase font-eukraine-regular">Strategic Command Centre</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-6 leading-tight font-eukraine-regular">Transform Business<span className="block text-accent animate-command-pulse font-eukraine-regular">Battles Into Wins</span></h1>
           <p className="text-base md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed font-eukraine-light">
             Battle-tested strategies for startups and growing businesses. We don&apos;t just give advice—we deliver war-tested frameworks that drive<span className="text-accent font-semibold font-eukraine-light"> users and revenue</span>.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 ">
             <a href="https://forms.gle/qH5DFWGTrdNMxuDx7" className="inline-flex items-center justify-center gap-2 whitespace-nowrap ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-11 rounded-md text-lg px-8 py-6 font-eukraine-regular font-semibold">Enter the War Room
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right ml-2 h-5 w-5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
             </a>

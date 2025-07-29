@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
+import type { BlogPost, BlogPostWithAuthor } from "@/types/blog"
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -27,22 +28,22 @@ export interface User {
   updated_at: string
 }
 
-export interface BlogPost {
-  id: string
-  title: string
-  excerpt: string
-  content: string
-  category: "Strategy" | "Growth" | "Leadership" | "Tactics" | "Insights"
-  type: "featured" | "normal"
-  status: "published" | "draft"
-  read_time: string
-  cover_image?: string
-  slug: string
-  author_id: string
-  created_at: string
-  updated_at: string
-  author?: User
-}
+// export interface BlogPost {
+//   id: string
+//   title: string
+//   excerpt: string
+//   content: string
+//   category: "Strategy" | "Growth" | "Leadership" | "Tactics" | "Insights"
+//   type: "featured" | "normal"
+//   status: "published" | "draft"
+//   read_time: string
+//   cover_image?: string
+//   slug: string
+//   author_id: string
+//   created_at: string
+//   updated_at: string
+//   author?: User
+// }
 
 export interface Category {
   id: string
@@ -51,3 +52,5 @@ export interface Category {
   description: string
   post_count: number
 }
+
+export type { BlogPost, BlogPostWithAuthor }

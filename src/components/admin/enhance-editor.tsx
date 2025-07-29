@@ -175,7 +175,7 @@ export function EnhancedEditor({ value, onChange, placeholder, readOnly = false 
         <div className="flex items-center justify-between">
           <div>
             <CardTitle>Content Editor</CardTitle>
-            <CardDescription>Write your strategic insights with rich formatting</CardDescription>
+            <CardDescription >Write your strategic insights with rich formatting</CardDescription>
           </div>
         </div>
       </CardHeader>

@@ -166,7 +166,11 @@ export default function BlogPostPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>{new Date(post.created_at).toLocaleDateString()}</span>
+                <span>{new Date(post.created_at).toLocaleDateString("en-US", {
+                      month: "short", // "Dec"
+                      day: "numeric", // "5"
+                      year: "numeric" // "2025"
+                    })}</span>
               </div>
             </div>
           </div>
@@ -207,7 +211,7 @@ export default function BlogPostPage() {
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-tactical transform hover:scale-105 transition-all duration-300 h-11 rounded-md px-8">
               Schedule Strategic Consultation
             </Button>
-            <Button variant="outline" className="h-11 rounded-md px-8 bg-transparent">
+            <Button variant="outline" className="h-11 rounded-md px-8 bg-transparent border-accent text-accent">
               Download Full Framework
             </Button>
           </div>

@@ -187,7 +187,11 @@ export function AdminDashboard() {
                   <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                     <div className="flex items-center space-x-1">
                       <Calendar className="w-4 h-4" />
-                      <span>{new Date(post.created_at).toLocaleDateString()}</span>
+                      <span>{new Date(post.created_at).toLocaleDateString("en-US", {
+                      month: "short", // "Dec"
+                      day: "numeric", // "5"
+                      year: "numeric" // "2025"
+                    })}</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <Clock className="w-4 h-4" />

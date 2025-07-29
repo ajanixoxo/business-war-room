@@ -469,11 +469,11 @@ body,
  
 }
 
-.font-eukraine-regular {
+.font-eukraine-regular,h1, h2 {
   font-family: 'EUkraineHead', sans-serif;
 }
 
-.font-eukraine-light {
+.font-eukraine-light,p {
   font-family: 'EUkraineHead', sans-serif;
 
 }
@@ -668,4 +668,17 @@ body,
 
 .ql-container + * {
   margin-top: 1rem;
+}
+.animate-target-lock {
+    animation: target-lock 2s ease-in-out infinite;
+}
+
+
+
+target-lock animation {
+    transform: scale(1.09263) rotate(256.734deg);
+    border-bottom-color: rgba(125, 155, 75, 0.643);
+    border-left-color: rgba(125, 155, 75, 0.643);
+    border-right-color: rgba(125, 155, 75, 0.643);
+    border-top-color: rgba(125, 155, 75, 0.643);
 }
