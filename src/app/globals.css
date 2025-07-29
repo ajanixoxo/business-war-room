@@ -3,6 +3,9 @@
 html {
   scroll-behavior: smooth;
 }
+button:hover{
+  cursor: pointer;
+}
 :root {
   --background: 210 20% 12%;
   --foreground: 210 20% 98%;
@@ -470,4 +473,196 @@ body,
 .font-eukraine-light {
   font-family: 'EUkraineHead', sans-serif;
 
+}
+.ql-editor {
+  min-height: 400px !important;
+  font-size: 16px;
+  line-height: 1.6;
+  color: hsl(var(--foreground));
+  background: hsl(var(--card));
+  padding: 1rem;
+}
+
+.ql-toolbar {
+  border-top: 1px solid hsl(var(--border)) !important;
+  border-left: 1px solid hsl(var(--border)) !important;
+  border-right: 1px solid hsl(var(--border)) !important;
+  background: hsl(var(--background)) !important;
+  border-radius: 8px 8px 0 0;
+  padding: 0.5rem;
+}
+
+.ql-container {
+  border-bottom: 1px solid hsl(var(--border)) !important;
+  border-left: 1px solid hsl(var(--border)) !important;
+  border-right: 1px solid hsl(var(--border)) !important;
+  background: hsl(var(--card)) !important;
+  border-radius: 0 0 8px 8px;
+  font-family: inherit;
+}
+
+/* Toolbar styling */
+.ql-toolbar .ql-picker-label {
+  color: hsl(var(--foreground)) !important;
+}
+
+.ql-toolbar .ql-picker-options {
+  background: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ql-toolbar .ql-picker-item {
+  color: hsl(var(--foreground)) !important;
+}
+
+.ql-toolbar .ql-picker-item:hover {
+  background: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+}
+
+.ql-toolbar button {
+  color: hsl(var(--foreground)) !important;
+  border: none;
+  padding: 0.25rem;
+  margin: 0.125rem;
+  border-radius: 4px;
+}
+
+.ql-toolbar button:hover {
+  background: hsl(var(--accent / 10)) !important;
+}
+
+.ql-toolbar button.ql-active {
+  background: hsl(var(--accent / 20)) !important;
+  color: hsl(var(--accent)) !important;
+}
+
+.ql-toolbar .ql-stroke {
+  stroke: hsl(var(--foreground)) !important;
+}
+
+.ql-toolbar .ql-fill {
+  fill: hsl(var(--foreground)) !important;
+}
+
+.ql-toolbar .ql-active .ql-stroke {
+  stroke: hsl(var(--accent)) !important;
+}
+
+.ql-toolbar .ql-active .ql-fill {
+  fill: hsl(var(--accent)) !important;
+}
+
+/* Content styling */
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3,
+.ql-editor h4,
+.ql-editor h5,
+.ql-editor h6 {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+  margin: 1em 0 0.5em 0;
+}
+
+.ql-editor h1 {
+  font-size: 2em;
+}
+
+.ql-editor h2 {
+  font-size: 1.5em;
+}
+
+.ql-editor h3 {
+  font-size: 1.25em;
+}
+
+.ql-editor p {
+  color: hsl(var(--foreground));
+  margin: 0.5em 0;
+}
+
+.ql-editor blockquote {
+  border-left: 4px solid hsl(var(--accent));
+  padding-left: 1em;
+  margin: 1em 0;
+  font-style: italic;
+  background: hsl(var(--muted / 30));
+  padding: 1em;
+  border-radius: 0 4px 4px 0;
+  color: hsl(var(--foreground));
+}
+
+.ql-editor pre.ql-syntax {
+  background: hsl(var(--muted)) !important;
+  border: 1px solid hsl(var(--border));
+  border-radius: 4px;
+  padding: 1em;
+  margin: 1em 0;
+  overflow-x: auto;
+  color: hsl(var(--foreground));
+}
+
+.ql-editor a {
+  color: hsl(var(--accent));
+  text-decoration: underline;
+}
+
+.ql-editor a:hover {
+  color: hsl(var(--accent / 80));
+}
+
+.ql-editor ul,
+.ql-editor ol {
+  color: hsl(var(--foreground));
+  padding-left: 1.5em;
+}
+
+.ql-editor li {
+  color: hsl(var(--foreground));
+  margin: 0.25em 0;
+}
+
+.ql-editor img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 1em 0;
+}
+
+/* Focus states */
+.ql-editor:focus {
+  outline: 2px solid hsl(var(--accent));
+  outline-offset: 2px;
+}
+
+/* Custom dropdown styling */
+.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+  border-color: hsl(var(--accent)) !important;
+}
+
+.ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
+  border-color: hsl(var(--accent)) !important;
+}
+
+/* Responsive toolbar */
+@media (max-width: 768px) {
+  .ql-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .ql-toolbar .ql-formats {
+    margin-right: 8px;
+    margin-bottom: 4px;
+  }
+
+  .ql-editor {
+    min-height: 300px !important;
+  }
+}
+
+.ql-container + * {
+  margin-top: 1rem;
 }

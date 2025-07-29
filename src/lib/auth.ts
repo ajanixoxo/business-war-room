@@ -5,6 +5,8 @@ export interface AuthUser {
   email: string
   name: string
   role: "admin"
+  created_at: string
+  updated_at: string
 }
 
 // Hardcoded allowed admin emails
@@ -39,11 +41,13 @@ class AuthService {
       email: profile.email,
       name: profile.name,
       role: profile.role,
+      created_at: profile.created_at || new Date().toISOString(),
+      updated_at: profile.updated_at || new Date().toISOString(),
     }
   }
 
   // Sign up new admin (restricted to allowed emails only)
-  async signUpAdmin(email: string, password: string, name: string): Promise<AuthUser> {
+async signUpAdmin(email: string, password: string, name: string): Promise<AuthUser> {
     // Check if email is in allowed list
     if (!this.isAllowedEmail(email)) {
       throw new Error("This email is not authorized to create an admin account")
@@ -61,7 +65,7 @@ class AuthService {
       .from("profiles")
       .select("email")
       .eq("email", email.toLowerCase())
-      .single()
+      .maybeSingle() // Use maybeSingle() instead of single() to handle no results
 
     if (existingUser) {
       throw new Error("An account with this email already exists")
@@ -80,13 +84,64 @@ class AuthService {
 
     if (error) throw error
 
-    return {
-      id: data.user!.id,
-      email,
-      name,
-      role: "admin",
+    if (!data.user) {
+      throw new Error("Failed to create user")
     }
-  }
+
+    // Wait a bit for the trigger to create the profile
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    // Try to get the profile, with retries
+    let profile = null
+    let attempts = 0
+    const maxAttempts = 5
+
+    while (!profile && attempts < maxAttempts) {
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", data.user.id)
+        .maybeSingle()
+
+      if (profileData) {
+        profile = profileData
+        break
+      }
+
+      if (profileError && profileError.code !== "PGRST116") {
+        throw profileError
+      }
+
+      attempts++
+      await new Promise((resolve) => setTimeout(resolve, 500))
+    }
+
+    if (!profile) {
+      // If profile still doesn't exist, create it manually
+      const { data: newProfile, error: createError } = await supabase
+        .from("profiles")
+        .insert({
+          id: data.user.id,
+          email: email.toLowerCase(),
+          name,
+          role: "admin",
+        })
+        .select()
+        .single()
+
+      if (createError) throw createError
+      profile = newProfile
+    }
+
+    return {
+      id: profile.id,
+      email: profile.email,
+      name: profile.name,
+      role: profile.role,
+      created_at: profile.created_at || new Date().toISOString(),
+      updated_at: profile.updated_at || new Date().toISOString(),
+    }
+}
 
   // Sign out
   async signOut() {
@@ -111,6 +166,8 @@ class AuthService {
       email: profile.email,
       name: profile.name,
       role: profile.role,
+      created_at: profile.created_at || new Date().toISOString(),
+      updated_at: profile.updated_at || new Date().toISOString(),
     }
   }
 

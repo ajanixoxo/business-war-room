@@ -1,174 +1,66 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Eye, EyeOff } from "lucide-react"
+import "react-quill-new/dist/quill.snow.css"
 
-// Dynamically import ReactQuill with enhanced modules
-const ReactQuill = dynamic(
-  async () => {
-    const { default: RQ } = await import("react-quill")
+// Dynamically import ReactQuill to avoid SSR issues
+const ReactQuill = dynamic(() => import("react-quill-new"), {
+  ssr: false,
+  loading: () => (
+    <div className="border border-border rounded-md p-4 min-h-[400px] flex items-center justify-center bg-card">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+    </div>
+  ),
+})
 
-    // Register table module
-    const Quill = (await import("quill")).default
-    const TableModule = (await import("quill-better-table")).default
-
-    Quill.register(
-      {
-        "modules/better-table": TableModule,
-      },
-      true,
-    )
-
-    return ({ forwardedRef, ...props }: any) => <RQ ref={forwardedRef} {...props} />
-  },
-  {
-    ssr: false,
-    loading: () => (
-      <div className="border border-border rounded-md p-4 min-h-[300px] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
-      </div>
-    ),
-  },
-)
-
-interface EnhancedEditorProps {
+export interface EnhancedEditorProps {
   value: string
   onChange: (value: string) => void
   placeholder?: string
   readOnly?: boolean
 }
 
+const quillModules = {
+  toolbar: [
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["link", "image"],
+    [{ align: [] }],
+    [{ color: [] }],
+    ["code-block"],
+    ["clean"],
+  ],
+}
+
+const quillFormats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "link",
+  "image",
+  "align",
+  "color",
+  "code-block",
+]
+
 export function EnhancedEditor({ value, onChange, placeholder, readOnly = false }: EnhancedEditorProps) {
-  const quillRef = useRef<any>(null)
-  const [showPreview, setShowPreview] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const [wordCount, setWordCount] = useState(0)
   const [charCount, setCharCount] = useState(0)
 
-  const modules = {
-    toolbar: {
-      container: [
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        [{ font: [] }],
-        [{ size: ["small", false, "large", "huge"] }],
-        ["bold", "italic", "underline", "strike"],
-        [{ color: [] }, { background: [] }],
-        [{ script: "sub" }, { script: "super" }],
-        [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-        [{ indent: "-1" }, { indent: "+1" }],
-        [{ direction: "rtl" }],
-        [{ align: [] }],
-        ["blockquote", "code-block"],
-        ["link", "image", "video", "formula"],
-        ["better-table"],
-        ["clean"],
-      ],
-      handlers: {
-        "better-table": function () {
-          const tableModule = this.quill.getModule("better-table")
-          tableModule.insertTable(3, 3)
-        },
-        image: function () {
-          const input = document.createElement("input")
-          input.setAttribute("type", "file")
-          input.setAttribute("accept", "image/*")
-          input.click()
-
-          input.onchange = () => {
-            const file = input.files?.[0]
-            if (file) {
-              const reader = new FileReader()
-              reader.onload = (e) => {
-                const range = this.quill.getSelection()
-                this.quill.insertEmbed(range.index, "image", e.target?.result)
-              }
-              reader.readAsDataURL(file)
-            }
-          }
-        },
-      },
-    },
-    "better-table": {
-      operationMenu: {
-        items: {
-          unmergeCells: {
-            text: "Unmerge cells",
-          },
-        },
-        color: {
-          colors: [
-            "#ffffff",
-            "#f8f9fa",
-            "#e9ecef",
-            "#dee2e6",
-            "#ced4da",
-            "#adb5bd",
-            "#6c757d",
-            "#495057",
-            "#343a40",
-            "#212529",
-            "#007bff",
-            "#6610f2",
-            "#6f42c1",
-            "#e83e8c",
-            "#dc3545",
-            "#fd7e14",
-            "#ffc107",
-            "#28a745",
-            "#20c997",
-            "#17a2b8",
-            "#6c757d",
-            "#343a40",
-            "#007bff",
-            "#28a745",
-          ],
-          text: "Background Colors:",
-        },
-      },
-    },
-    keyboard: {
-      bindings: {
-        tab: {
-          key: 9,
-          handler: () => true,
-        },
-      },
-    },
-    syntax: true,
-    clipboard: {
-      matchVisual: false,
-    },
-  }
-
-  const formats = [
-    "header",
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "color",
-    "background",
-    "script",
-    "list",
-    "bullet",
-    "check",
-    "indent",
-    "direction",
-    "align",
-    "blockquote",
-    "code-block",
-    "link",
-    "image",
-    "video",
-    "formula",
-    "better-table",
-    "clean",
-  ]
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (value) {
@@ -186,11 +78,7 @@ export function EnhancedEditor({ value, onChange, placeholder, readOnly = false 
   }, [value])
 
   const insertTemplate = (template: string) => {
-    if (quillRef.current) {
-      const quill = quillRef.current.getEditor()
-      const range = quill.getSelection()
-      quill.insertText(range.index, template)
-    }
+    onChange(value + template)
   }
 
   const templates = [
@@ -208,18 +96,7 @@ export function EnhancedEditor({ value, onChange, placeholder, readOnly = false 
 </ol>
 
 <h3>Implementation Steps</h3>
-<table>
-  <tr>
-    <th>Step</th>
-    <th>Action</th>
-    <th>Timeline</th>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>Initial Assessment</td>
-    <td>Week 1</td>
-  </tr>
-</table>
+<p>Step-by-step implementation guide...</p>
 
 <blockquote>
 💡 <strong>Pro Tip:</strong> Key insight or recommendation
@@ -268,7 +145,6 @@ export function EnhancedEditor({ value, onChange, placeholder, readOnly = false 
 
 <h4>Step 1: [Action]</h4>
 <p>Detailed explanation...</p>
-<blockquote>⚠️ <strong>Important:</strong> Key warning or note</blockquote>
 
 <h4>Step 2: [Action]</h4>
 <p>Detailed explanation...</p>
@@ -285,19 +161,21 @@ export function EnhancedEditor({ value, onChange, placeholder, readOnly = false 
     },
   ]
 
+  if (!mounted) {
+    return (
+      <div className="border border-border rounded-md p-4 min-h-[400px] flex items-center justify-center bg-card">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+      </div>
+    )
+  }
+
   return (
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Enhanced Content Editor</CardTitle>
-            <CardDescription>Advanced rich text editor with tables, formatting, and templates</CardDescription>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm" onClick={() => setShowPreview(!showPreview)}>
-              {showPreview ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
-              {showPreview ? "Edit" : "Preview"}
-            </Button>
+            <CardTitle>Content Editor</CardTitle>
+            <CardDescription>Write your strategic insights with rich formatting</CardDescription>
           </div>
         </div>
       </CardHeader>
@@ -306,45 +184,44 @@ export function EnhancedEditor({ value, onChange, placeholder, readOnly = false 
         <div className="flex flex-wrap gap-2">
           <span className="text-sm font-medium text-muted-foreground">Quick Templates:</span>
           {templates.map((template) => (
-            <Button key={template.name} variant="outline" size="sm" onClick={() => onChange(value + template.content)}>
+            <Button
+              key={template.name}
+              variant="outline"
+              size="sm"
+              onClick={() => insertTemplate(template.content)}
+              type="button"
+            >
               {template.name}
             </Button>
           ))}
         </div>
 
         {/* Editor */}
-        {showPreview ? (
-          <div className="border border-border rounded-md p-4 min-h-[300px] bg-card">
-            <div
-              className="prose prose-sm max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-ul:text-foreground prose-ol:text-foreground prose-li:text-foreground prose-a:text-accent hover:prose-a:text-accent/80"
-              dangerouslySetInnerHTML={{ __html: value }}
-            />
-          </div>
-        ) : (
-          <div className="relative">
-            <ReactQuill
-              forwardedRef={quillRef}
-              theme="snow"
-              value={value}
-              onChange={onChange}
-              modules={modules}
-              formats={formats}
-              placeholder={placeholder || "Start writing your strategic insights..."}
-              readOnly={readOnly}
-              style={{ minHeight: "300px" }}
-            />
-          </div>
-        )}
+        <div className="w-full">
+          <ReactQuill
+            value={value}
+            onChange={onChange}
+            readOnly={readOnly}
+            modules={quillModules}
+            formats={quillFormats}
+            theme="snow"
+            placeholder={placeholder || "Start writing your strategic insights..."}
+            style={{
+              height: "400px",
+            }}
+            className="placeholder-text-muted-foreground"
+          />
+        </div>
 
         {/* Editor Stats */}
-        <div className="flex items-center justify-between text-sm text-muted-foreground border-t border-border pt-4">
+        <div className="flex items-center justify-between text-sm text-muted-foreground border-t border-border pt-4 mt-16">
           <div className="flex items-center space-x-4">
             <span>Words: {wordCount}</span>
             <span>Characters: {charCount}</span>
             <span>Read time: {Math.ceil(wordCount / 200)} min</span>
           </div>
           <div className="flex items-center space-x-2">
-            <Badge variant="outline">Enhanced Editor</Badge>
+            <Badge variant="outline">Rich Editor</Badge>
           </div>
         </div>
 
@@ -357,9 +234,9 @@ export function EnhancedEditor({ value, onChange, placeholder, readOnly = false 
             <li>
               • Use <kbd>Ctrl+B</kbd> for bold, <kbd>Ctrl+I</kbd> for italic, <kbd>Ctrl+K</kbd> for links
             </li>
-            <li>• Click the table icon to insert tables with advanced formatting</li>
+            <li>• Use the toolbar to format text, add lists, quotes, and code blocks</li>
             <li>• Use templates above for consistent content structure</li>
-            <li>• Drag and drop images directly into the editor</li>
+            <li>• Paste images directly into the editor</li>
           </ul>
         </div>
       </CardContent>

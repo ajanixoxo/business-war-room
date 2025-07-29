@@ -10,6 +10,7 @@ export default function AdminPage() {
   const router = useRouter()
 
   useEffect(() => {
+    console.log(loading, user)
     if (!loading && !user) {
       router.push("/admin/login")
     }

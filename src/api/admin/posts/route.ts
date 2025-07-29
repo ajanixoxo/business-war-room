@@ -1,26 +1,32 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
-import { writeFile } from "fs/promises"
-import { join } from "path"
+import { createServerClient } from "@/lib/supabase"
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions)
+    const supabase = createServerClient()
 
-    if (!session) {
+    // Get current user
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const posts = await prisma.post.findMany({
-      orderBy: { createdAt: "desc" },
-      include: {
-        author: {
-          select: { name: true, email: true },
-        },
-      },
-    })
+    const { data: posts, error } = await supabase
+      .from("posts")
+      .select(`
+        *,
+        author:profiles(name, email)
+      `)
+      .order("created_at", { ascending: false })
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
 
     return NextResponse.json(posts)
   } catch (error) {
@@ -30,9 +36,15 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const supabase = createServerClient()
 
-    if (!session) {
+    // Get current user
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -48,30 +60,53 @@ export async function POST(request: NextRequest) {
 
     let coverImagePath = null
 
-    if (coverImage) {
-      const bytes = await coverImage.arrayBuffer()
-      const buffer = Buffer.from(bytes)
+    if (coverImage && coverImage.size > 0) {
+      const fileExt = coverImage.name.split(".").pop()
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+      const filePath = `blog-images/${fileName}`
 
-      const filename = `${Date.now()}-${coverImage.name}`
-      const path = join(process.cwd(), "public/uploads", filename)
+      const { error: uploadError } = await supabase.storage.from("blog-assets").upload(filePath, coverImage)
 
-      await writeFile(path, buffer)
-      coverImagePath = `/uploads/${filename}`
+      if (uploadError) {
+        return NextResponse.json({ error: uploadError.message }, { status: 500 })
+      }
+
+      const { data } = supabase.storage.from("blog-assets").getPublicUrl(filePath)
+      coverImagePath = data.publicUrl
     }
 
-    const post = await prisma.post.create({
-      data: {
+    const generateSlug = (title: string) => {
+      return title
+        .toLowerCase()
+        .replace(/[^a-z0-9 -]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-")
+        .trim()
+    }
+
+    const { data: post, error } = await supabase
+      .from("posts")
+      .insert({
         title,
         excerpt,
         content,
         category,
         type: type as "featured" | "normal",
         status: status as "published" | "draft",
-        readTime,
-        coverImage: coverImagePath,
-        authorId: session.user.id,
-      },
-    })
+        read_time: readTime,
+        cover_image: coverImagePath,
+        slug: generateSlug(title),
+        author_id: user.id,
+      })
+      .select(`
+        *,
+        author:profiles(name, email)
+      `)
+      .single()
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
 
     return NextResponse.json(post)
   } catch (error) {

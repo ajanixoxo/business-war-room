@@ -70,12 +70,12 @@ export function AdminDashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <Link href="/admin/create">
-                <Button>
+                <Button className="text-white border-accent bg-accent">
                   <Plus className="w-4 h-4 mr-2" />
                   Create New Post
                 </Button>
               </Link>
-              <Button variant="outline" onClick={handleSignOut}>
+              <Button variant="outline" className="text-accent border-accent" onClick={handleSignOut}>
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
               </Button>
@@ -140,7 +140,7 @@ export function AdminDashboard() {
                 <h3 className="text-lg font-semibold mb-2">No posts yet</h3>
                 <p className="text-muted-foreground mb-4">Create your first intelligence report to get started.</p>
                 <Link href="/admin/create">
-                  <Button>
+                  <Button className="text-white border-accent bg-accent">
                     <Plus className="w-4 h-4 mr-2" />
                     Create First Post
                   </Button>

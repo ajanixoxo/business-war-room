@@ -47,12 +47,12 @@ export function BlogCategories() {
             <Button
               key={category.name}
               variant={isActive ? "default" : "outline"}
-              className="h-12 px-6"
+              className={`!px-6 !py-4 ${isActive ? "bg-accent text-white " : "text-accent border-accent "}`}
               onClick={() => setActiveCategory(category.name)}
             >
               <Icon className="w-4 h-4 mr-2" />
               {category.name}
-              <span className="ml-2 bg-background/20 px-2 py-1 rounded-full text-xs">{category.count}</span>
+              <span className="ml-2 bg-background/20 px-2 py-1 rounded-full text-sm">{category.count}</span>
             </Button>
           )
         })}

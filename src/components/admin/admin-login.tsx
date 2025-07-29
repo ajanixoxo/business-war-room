@@ -7,16 +7,16 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Shield, Mail, Lock, AlertCircle, UserPlus } from "lucide-react"
+import { Shield, Mail, Lock, UserPlus } from "lucide-react"
 import { useAuth } from "@/components/providers/auth-providers"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
- 
+
 export function AdminLogin() {
   const [loginData, setLoginData] = useState({ email: "", password: "" })
   const [signupData, setSignupData] = useState({ email: "", password: "", name: "", confirmPassword: "" })
   const [isLoading, setIsLoading] = useState(false)
-  const { signIn, signUp, allowedEmails } = useAuth()
+  const { signIn, signUp } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
 
@@ -35,7 +35,7 @@ export function AdminLogin() {
       const message = error instanceof Error ? error.message : "Failed to delete blog post";
       toast({
         title: "Authentication Failed",
-        description: error.message || "Invalid credentials. Please try again.",
+        description: message,
         variant: "destructive",
       })
     } finally {
@@ -72,11 +72,16 @@ export function AdminLogin() {
         title: "Account Created",
         description: "Admin account created successfully. Welcome to the War Room!",
       })
-      router.push("/admin")
-    } catch (error: any) {
+       setTimeout(() => {
+        router.push("/admin")
+      }, 1000)
+
+     
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to create account";
       toast({
         title: "Signup Failed",
-        description: error.message || "Failed to create account. Please try again.",
+        description: message,
         variant: "destructive",
       })
     } finally {

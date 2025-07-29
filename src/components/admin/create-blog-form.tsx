@@ -3,7 +3,6 @@
 import type React from "react"
 import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
-import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -14,27 +13,22 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Upload, Eye, Save, Send } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useBlogStore } from "@/store/blog-store"
-import { useAuth } from "@/components/providers/auth-provider"
+import { useAuth } from "@/components/providers/auth-providers"
 import { supabase } from "@/lib/supabase"
 import Link from "next/link"
-import { EnhancedEditor } from "./enhanced-editor"
+import { EnhancedEditor } from "./enhance-editor"
 
-// Enhanced Quill modules
-import "react-quill/dist/quill.snow.css"
-import "react-quill/dist/quill.bubble.css"
+// Define the category type based on your BlogPost interface
+type BlogCategory = "Strategy" | "Growth" | "Leadership" | "Tactics" | "Insights"
 
-// Dynamically import ReactQuill to avoid SSR issues
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false })
-import "react-quill/dist/quill.snow.css"
-
-const categories = ["Strategy", "Growth", "Leadership", "Tactics", "Insights"]
+const categories: BlogCategory[] = ["Strategy", "Growth", "Leadership", "Tactics", "Insights"]
 
 export function CreateBlogForm() {
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
     content: "",
-    category: "",
+    category: "" as BlogCategory | "",
     type: "normal" as "featured" | "normal",
     status: "draft" as "published" | "draft",
     coverImage: null as File | null,
@@ -47,7 +41,7 @@ export function CreateBlogForm() {
   const { createPost } = useBlogStore()
   const { user } = useAuth()
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | BlogCategory | File | null | "featured" | "normal") => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
@@ -112,7 +106,7 @@ export function CreateBlogForm() {
     setIsLoading(true)
 
     try {
-      let coverImageUrl = null
+      let coverImageUrl: string | undefined = undefined
 
       if (formData.coverImage) {
         coverImageUrl = await uploadImage(formData.coverImage)
@@ -122,7 +116,7 @@ export function CreateBlogForm() {
         title: formData.title,
         excerpt: formData.excerpt,
         content: formData.content,
-        category: formData.category as any,
+        category: formData.category as BlogCategory,
         type: formData.type,
         status,
         read_time: calculateReadTime(formData.content),
@@ -138,10 +132,11 @@ export function CreateBlogForm() {
         description: `Blog post ${status === "published" ? "published" : "saved as draft"} successfully`,
       })
       router.push("/admin")
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to create blog post";
       toast({
         title: "Error",
-        description: error.message || "Failed to save blog post",
+        description: message,
         variant: "destructive",
       })
     } finally {
@@ -156,7 +151,7 @@ export function CreateBlogForm() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/admin">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="text-accent border-accent">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Dashboard
                 </Button>
@@ -167,15 +162,15 @@ export function CreateBlogForm() {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <Button variant="outline" onClick={() => setShowPreview(!showPreview)}>
+              <Button variant="outline" onClick={() => setShowPreview(!showPreview)} className="text-accent broder-accent">
                 <Eye className="w-4 h-4 mr-2" />
                 {showPreview ? "Edit" : "Preview"}
               </Button>
-              <Button variant="outline" onClick={() => handleSubmit("draft")} disabled={isLoading}>
+              <Button variant="outline" onClick={() => handleSubmit("draft")} disabled={isLoading} className="text-accent broder-accent">
                 <Save className="w-4 h-4 mr-2" />
                 Save Draft
               </Button>
-              <Button onClick={() => handleSubmit("published")} disabled={isLoading}>
+              <Button onClick={() => handleSubmit("published")} disabled={isLoading} className="text-white bg-accent">
                 <Send className="w-4 h-4 mr-2" />
                 Publish
               </Button>
@@ -218,7 +213,7 @@ export function CreateBlogForm() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="category">Category *</Label>
-                    <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
+                    <Select  value={formData.category} onValueChange={(value: BlogCategory) => handleInputChange("category", value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
