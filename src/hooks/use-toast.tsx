@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
 import * as React from "react"
@@ -38,6 +39,7 @@ function genId() {
   return count.toString()
 }
 
+console.log(actionTypes,genId())
 type ActionType = typeof actionTypes
 
 type Action =

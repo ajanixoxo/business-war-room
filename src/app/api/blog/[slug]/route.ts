@@ -2,18 +2,19 @@ import { type NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
 
 interface RouteParams {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
+     const { slug } = await params;
     const { data: post, error } = await supabase
       .from("posts")
       .select(`
         *,
         author:profiles(name, email)
       `)
-      .eq("slug", params.slug)
+      .eq("slug", slug)
       .eq("status", "published")
       .single()
 
