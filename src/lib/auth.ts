@@ -10,7 +10,7 @@ export interface AuthUser {
 }
 
 // Hardcoded allowed admin emails
-const ALLOWED_ADMIN_EMAILS = ["takeoutsguy@gmail.com", "Bunmibalogun450@yahoo.com", "joelayomide35@gmail.com"]
+const ALLOWED_ADMIN_EMAILS = ["takeoutsguy@gmail.com", "bunmibalogun450@yahoo.com", "joelayomide35@gmail.com"]
 
 class AuthService {
   // Check if email is allowed to register
