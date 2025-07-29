@@ -119,16 +119,20 @@ export const useBlogStore = create<BlogState>()(
           set({ isCreating: true })
 
           try {
-            const { data, error } = await supabase
-              .from("posts")
-              .insert([postData])
-              .select(`
-                *,
-                author:profiles(name, email)
-              `)
-              .single()
+            const response = await fetch("/api/admin/posts", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(postData),
+            })
 
-            if (error) throw error
+            if (!response.ok) {
+              const errorData = await response.json()
+              throw new Error(errorData.error || "Failed to create post")
+            }
+
+            const data = await response.json()
 
             // Update local state
             set((state) => ({
@@ -148,17 +152,29 @@ export const useBlogStore = create<BlogState>()(
           set({ isUpdating: true })
 
           try {
-            const { data, error } = await supabase
-              .from("posts")
-              .update(updates)
-              .eq("id", id)
-              .select(`
-                *,
-                author:profiles(name, email)
-              `)
-              .single()
+            // Get the current session token
+            const {
+              data: { session },
+            } = await supabase.auth.getSession()
 
-            if (error) throw error
+            if (!session?.access_token) {
+              throw new Error("No valid session found. Please log in again.")
+            }
+
+            const response = await fetch(`/api/admin/posts/${id}`, {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${session.access_token}`,
+              },
+              body: JSON.stringify(updates),
+            })
+
+            if (!response.ok) {
+              const errorData = await response.json()
+              throw new Error(errorData.error || "Failed to update post")
+            }
+
+            const data = await response.json()
 
             // Update local state
             set((state) => ({
@@ -178,9 +194,26 @@ export const useBlogStore = create<BlogState>()(
           set({ isDeleting: true })
 
           try {
-            const { error } = await supabase.from("posts").delete().eq("id", id)
+            // Get the current session token
+            const {
+              data: { session },
+            } = await supabase.auth.getSession()
 
-            if (error) throw error
+            if (!session?.access_token) {
+              throw new Error("No valid session found. Please log in again.")
+            }
+
+            const response = await fetch(`/api/admin/posts/${id}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${session.access_token}`,
+              },
+            })
+
+            if (!response.ok) {
+              const errorData = await response.json()
+              throw new Error(errorData.error || "Failed to delete post")
+            }
 
             // Update local state
             set((state) => ({

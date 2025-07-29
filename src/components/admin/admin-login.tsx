@@ -11,6 +11,7 @@ import { Shield, Mail, Lock, UserPlus } from "lucide-react"
 import { useAuth } from "@/components/providers/auth-providers"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
+import { AuthDebugComponent } from "../providers/auth-debug"
 
 export function AdminLogin() {
   const [loginData, setLoginData] = useState({ email: "", password: "" })
@@ -21,27 +22,33 @@ export function AdminLogin() {
   const { toast } = useToast()
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+  e.preventDefault()
+  setIsLoading(true)
 
-    try {
-      await signIn(loginData.email, loginData.password)
-      toast({
-        title: "Welcome to the War Room",
-        description: "Successfully authenticated as admin",
-      })
-      router.push("/admin")
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Failed to delete blog post";
-      toast({
-        title: "Authentication Failed",
-        description: message,
-        variant: "destructive",
-      })
-    } finally {
-      setIsLoading(false)
-    }
+  try {
+    console.log('🔐 Starting login process...')
+    await signIn(loginData.email, loginData.password)
+    
+    console.log('✅ Sign in successful, showing toast...')
+    toast({
+      title: "Welcome to the War Room",
+      description: "Successfully authenticated as admin",
+    })
+    
+    console.log('🚀 Navigating to /admin...')
+    router.push("/admin")
+  } catch (error: unknown) {
+    console.error('❌ Login error:', error)
+    const message = error instanceof Error ? error.message : "Failed to login";
+    toast({
+      title: "Authentication Failed",
+      description: message,
+      variant: "destructive",
+    })
+  } finally {
+    setIsLoading(false)
   }
+}
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -229,6 +236,7 @@ export function AdminLogin() {
           </div>
         </div> */}
       </CardContent>
+      <AuthDebugComponent/>
     </Card>
   )
 }

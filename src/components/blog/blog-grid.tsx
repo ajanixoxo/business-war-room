@@ -38,8 +38,8 @@ export function BlogGrid() {
     <section className="py-16">
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {publishedPosts.map((post) => (
-          <Link key={post.id} href={`/blog/${post.slug}`} className="rounded-lg border border-accent/20 bg-card text-card-foreground shadow-sm group overflow-hidden hover:shadow-command transition-all duration-300 cursor-pointer">
-            <Card className="l">
+          <Link key={post.id} href={`/blog/${post.slug}`} className="rounded-lg  border-accent/20 bg-card text-card-foreground shadow-sm group overflow-hidden hover:shadow-command transition-all duration-300 cursor-pointer">
+            <Card className="l gap-3 pt-0 border-0">
               <div className="aspect-video relative">
                 {post.cover_image ? (
                   <Image src={post.cover_image || "/placeholder.svg"} alt={post.title} fill className="object-cover" />
@@ -67,7 +67,11 @@ export function BlogGrid() {
                     <User className="w-4 h-4" />
                     <span>{post.author?.name || "Balogun"}</span>
                     <span>•</span>
-                    <span>{new Date(post.created_at).toLocaleDateString()}</span>
+                    <span>{new Date(post.created_at).toLocaleDateString("en-US", {
+                      month: "short", // "Dec"
+                      day: "numeric", // "5"
+                      year: "numeric" // "2025"
+                    })}</span>
                   </div>
                   <ArrowRight className="w-4 h-4 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>

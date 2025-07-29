@@ -22,41 +22,82 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { setCurrentUser } = useBlogStore()
 
   useEffect(() => {
+    let mounted = true
+
     // Get initial user
-    authService.getCurrentUser().then((user) => {
-      setUser(user)
-      setCurrentUser(user)
-      setLoading(false)
-    })
+    const initializeAuth = async () => {
+      try {
+        const currentUser = await authService.getCurrentUser()
+        if (mounted) {
+          setUser(currentUser)
+          setCurrentUser(currentUser)
+          setLoading(false)
+        }
+      } catch (error) {
+        console.error("Error getting current user:", error)
+        if (mounted) {
+          setUser(null)
+          setCurrentUser(null)
+          setLoading(false)
+        }
+      }
+    }
+
+    initializeAuth()
 
     // Listen for auth changes
-    const {
-      data: { subscription },
-    } = authService.onAuthStateChange((user) => {
-      setUser(user)
-      setCurrentUser(user)
-      setLoading(false)
+    const { data: { subscription } } = authService.onAuthStateChange(async (authUser) => {
+      console.log('🔄 AuthProvider: Auth state changed, received user:', authUser)
+      if (mounted) {
+        setUser(authUser)
+        setCurrentUser(authUser)
+        console.log('✅ AuthProvider: Updated user state with:', authUser)
+        if (!loading) {
+          setLoading(false)
+        }
+      }
     })
 
-    return () => subscription.unsubscribe()
-  }, [setCurrentUser])
+    return () => {
+      mounted = false
+      subscription.unsubscribe()
+    }
+  }, [setCurrentUser, loading])
 
   const signIn = async (email: string, password: string) => {
-    const user = await authService.signInWithEmail(email, password)
-    setUser(user)
-    setCurrentUser(user)
+    try {
+      console.log('🔐 AuthProvider: Starting signIn...')
+      const user = await authService.signInWithEmail(email, password)
+      console.log('✅ AuthProvider: Got user from service:', user)
+      setUser(user)
+      setCurrentUser(user)
+      console.log('✅ AuthProvider: Set user state')
+    } catch (error) {
+      console.error("❌ AuthProvider: Sign in error:", error)
+      throw error
+    }
   }
 
   const signUp = async (email: string, password: string, name: string) => {
-    const user = await authService.signUpAdmin(email, password, name)
-    setUser(user)
-    setCurrentUser(user)
+    try {
+      const user = await authService.signUpAdmin(email, password, name)
+      setUser(user)
+      setCurrentUser(user)
+    } catch (error) {
+      console.error("Sign up error:", error)
+      throw error
+    }
   }
 
   const signOut = async () => {
-    await authService.signOut()
-    setUser(null)
-    setCurrentUser(null)
+    try {
+      await authService.signOut()
+      setUser(null)
+      setCurrentUser(null)
+    } catch (error) {
+      console.error("Sign out error:", error)
+      throw error
+    }
   }
 
   return (

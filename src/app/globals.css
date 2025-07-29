@@ -261,6 +261,9 @@ body,
   box-shadow: var(--shadow-tactical);
 }
 
+.hover\:bg-accent\/10:hover {
+    background-color: hsl(var(--accent) / .1)
+}
 @keyframes command-pulse {
 
   0%,
