@@ -106,37 +106,50 @@ export function CreateBlogForm() {
     setIsLoading(true)
 
     try {
-      let coverImageUrl: string | undefined = undefined
+      // Create FormData for the API request
+      const apiFormData = new FormData()
+      apiFormData.append("title", formData.title)
+      apiFormData.append("excerpt", formData.excerpt)
+      apiFormData.append("content", formData.content)
+      apiFormData.append("category", formData.category)
+      apiFormData.append("type", formData.type)
+      apiFormData.append("status", status)
+      apiFormData.append("readTime", calculateReadTime(formData.content))
 
       if (formData.coverImage) {
-        coverImageUrl = await uploadImage(formData.coverImage)
+        apiFormData.append("coverImage", formData.coverImage)
       }
 
-      const postData = {
-        title: formData.title,
-        excerpt: formData.excerpt,
-        content: formData.content,
-        category: formData.category as BlogCategory,
-        type: formData.type,
-        status,
-        read_time: calculateReadTime(formData.content),
-        cover_image: coverImageUrl,
-        slug: generateSlug(formData.title),
-        author_id: user.id,
+      // Make API request
+      const response = await fetch("/api/admin/posts", {
+        method: "POST",
+        body: apiFormData,
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to create post")
       }
 
-      await createPost(postData)
+      const newPost = await response.json()
+
+      // Update the store with the new post
+      const { invalidateCache, fetchPosts } = useBlogStore.getState()
+      invalidateCache()
+      await fetchPosts()
 
       toast({
         title: "Success",
         description: `Blog post ${status === "published" ? "published" : "saved as draft"} successfully`,
       })
+
       router.push("/admin")
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Failed to create blog post";
+      const message = error instanceof Error ? error.message : "Failed to create post"
+      console.error("Error creating post:", error)
       toast({
         title: "Error",
-        description: message,
+        description: message || "Failed to save blog post",
         variant: "destructive",
       })
     } finally {
