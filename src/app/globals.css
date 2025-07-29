@@ -672,6 +672,13 @@ body,
 .animate-target-lock {
     animation: target-lock 2s ease-in-out infinite;
 }
+/* Tailwind placeholder color override for ReactQuill */
+.ql-editor.ql-blank::before {
+  @apply text-white; /* or any Tailwind placeholder utility like text-muted-foreground */
+  color: white; /* fallback if @apply doesn't work */
+  opacity: 0.6; /* optional: match typical placeholder opacity */
+}
+
 
 
 

@@ -99,7 +99,7 @@ export default function Navbar() {
             >
               <X className="h-6 w-6" />
             </button>
-            <div className="absolute right-0 w-2/5 h-full bg-background backdrop-blur-md">
+            <div className="absolute right-0 sm:w-4/5 w-4/5 h-full bg-background backdrop-blur-md">
 
               <div className="p-6 space-y-4">
                 <div className="flex items-center text-center justify-between p-4  border-b border-accent/20">

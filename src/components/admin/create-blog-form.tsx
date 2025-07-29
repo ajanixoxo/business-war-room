@@ -172,12 +172,12 @@ export function CreateBlogForm() {
     <div className="min-h-screen bg-background">
       <div className="border-b border-border">
         <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col lg:flex-row gap-2 items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/admin">
                 <Button variant="ghost" size="sm" className="text-accent border-accent">
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Dashboard
+                 <span className="hidden lg:flex"> Back to Dashboard</span>
                 </Button>
               </Link>
               <div>
@@ -268,7 +268,7 @@ export function CreateBlogForm() {
                   </div>
                 </div>
 
-                <div>
+                <div className="hidden">
                   <Label htmlFor="coverImage">Cover Image</Label>
                   <div className="mt-2">
                     <input
@@ -302,6 +302,7 @@ export function CreateBlogForm() {
                   value={formData.content}
                   onChange={(content) => handleInputChange("content", content)}
                   placeholder="Share your battle-tested wisdom..."
+                  
                 />
                 <div className="mt-2 text-xs text-muted-foreground">
                   <p>

@@ -61,10 +61,10 @@ export function AdminDashboard() {
     <div className="min-h-screen bg-background">
       <div className="border-b border-border">
         <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col lg:flex-row gap-3 items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">War Room Command Center</h1>
-              <p className="text-muted-foreground">
+              <h1 className="text-3xl font-bold text-foreground mb-2">War Room Command Center</h1>
+              <p className="text-muted-foreground text-sm">
                 Welcome back, {user?.name} • Manage your strategic intelligence reports
               </p>
             </div>
@@ -149,16 +149,16 @@ export function AdminDashboard() {
             </Card>
           ) : (
             posts.map((post) => (
-              <Card key={post.id}>
+              <Card key={post.id} className="">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
                         <Badge variant={post.type === "featured" ? "default" : "secondary"}>{post.type}</Badge>
-                        <Badge variant={post.status === "published" ? "default" : "outline"}>{post.status}</Badge>
+                        <Badge variant={post.status === "published" ? "default" : "outline"} className="hidden md:inline">{post.status}</Badge>
                         <Badge variant="outline">{post.category}</Badge>
                       </div>
-                      <CardTitle className="text-xl mb-2">{post.title}</CardTitle>
+                      <CardTitle className="text-xl mb-2 w-max">{post.title}</CardTitle>
                       <CardDescription className="line-clamp-2">{post.excerpt}</CardDescription>
                     </div>
                     <div className="flex items-center space-x-2 ml-4">
@@ -197,7 +197,7 @@ export function AdminDashboard() {
                       <Clock className="w-4 h-4" />
                       <span>{post.read_time}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
+                    <div className=" items-center space-x-1 hidden">
                       <User className="w-4 h-4" />
                       <span>{post.author?.name || "Unknown"}</span>
                     </div>

@@ -205,11 +205,11 @@ export function EnhancedEditor({ value, onChange, placeholder, readOnly = false 
             modules={quillModules}
             formats={quillFormats}
             theme="snow"
-            placeholder={placeholder || "Start writing your strategic insights..."}
+            placeholder={placeholder || ""}
             style={{
               height: "400px",
             }}
-            className="placeholder-text-muted-foreground"
+            className="placeholder-text-muted-foreground "
           />
         </div>
 

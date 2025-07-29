@@ -247,12 +247,12 @@ export function EditBlogForm({ post }: EditBlogFormProps) {
       {/* Header */}
       <div className="border-b border-border">
         <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col lg:flex-row gap-2  items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/admin">
                 <Button variant="outline" size="sm" className="border-accent text-accent">
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Dashboard
+                <span className="hidden md:inline"> Back to Dashboard</span> 
                 </Button>
               </Link>
               <div>
@@ -262,7 +262,7 @@ export function EditBlogForm({ post }: EditBlogFormProps) {
             </div>
             <div className="flex items-center space-x-2">
               {/* Mobile Preview Toggle */}
-              <Button variant="outline" onClick={() => setShowMobilePreview(!showMobilePreview)} className="lg:hidden border-accent text-accent">
+              <Button variant="outline" onClick={() => setShowMobilePreview(!showMobilePreview)} className="hidden border-accent text-accent">
                 {showMobilePreview ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
                 {showMobilePreview ? "Hide Preview" : "Show Preview"}
               </Button>
