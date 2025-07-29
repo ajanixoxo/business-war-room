@@ -38,8 +38,8 @@ export function BlogGrid() {
     <section className="py-16">
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {publishedPosts.map((post) => (
-          <Link key={post.id} href={`/blog/${post.slug}`}>
-            <Card className="group overflow-hidden hover:shadow-command transition-all duration-300 cursor-pointer h-full">
+          <Link key={post.id} href={`/blog/${post.slug}`} className="rounded-lg border border-accent/20 bg-card text-card-foreground shadow-sm group overflow-hidden hover:shadow-command transition-all duration-300 cursor-pointer">
+            <Card className="l">
               <div className="aspect-video relative">
                 {post.cover_image ? (
                   <Image src={post.cover_image || "/placeholder.svg"} alt={post.title} fill className="object-cover" />
@@ -49,7 +49,7 @@ export function BlogGrid() {
               </div>
               <div className="p-6 flex flex-col flex-1">
                 <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-4">
-                  <Badge className="border-accent text-accent">{post.category}</Badge>
+                  <Badge className="border-accent text-accent bg-transparent">{post.category}</Badge>
                   <div className="flex items-center space-x-1">
                     <Clock className="w-4 h-4" />
                     <span>{post.read_time}</span>

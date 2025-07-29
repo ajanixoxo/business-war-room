@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
-import { Navigation } from "@/components/navigation"
-import { Footer } from "@/components/footer"
+import Navbar from "@/app/Navbar"
+import Footer from "@/app/Footer"
 import { Badge } from "@/components/ui/badge"
 import { Clock, User, Calendar, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -53,7 +53,7 @@ export default function BlogPostPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <Navigation />
+        <Navbar />
         <article className="pt-24 pb-16">
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto">
@@ -81,7 +81,7 @@ export default function BlogPostPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <Navbar />
 
       <article className="pt-24 pb-16">
         <div className="container mx-auto px-6">

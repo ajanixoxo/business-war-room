@@ -38,7 +38,7 @@ export function CreateBlogForm() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
   const { toast } = useToast()
-  const { createPost } = useBlogStore()
+  // const { createPost } = useBlogStore()
   const { user } = useAuth()
 
   const handleInputChange = (field: string, value: string | BlogCategory | File | null | "featured" | "normal") => {
@@ -59,30 +59,30 @@ export function CreateBlogForm() {
     return `${minutes} min read`
   }
 
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9 -]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .trim()
-  }
+  // const generateSlug = (title: string) => {
+  //   return title
+  //     .toLowerCase()
+  //     .replace(/[^a-z0-9 -]/g, "")
+  //     .replace(/\s+/g, "-")
+  //     .replace(/-+/g, "-")
+  //     .trim()
+  // }
 
-  const uploadImage = async (file: File): Promise<string> => {
-    const fileExt = file.name.split(".").pop()
-    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
-    const filePath = `blog-images/${fileName}`
+  // const uploadImage = async (file: File): Promise<string> => {
+  //   const fileExt = file.name.split(".").pop()
+  //   const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+  //   const filePath = `blog-images/${fileName}`
 
-    const { error: uploadError } = await supabase.storage.from("blog-assets").upload(filePath, file)
+  //   const { error: uploadError } = await supabase.storage.from("blog-assets").upload(filePath, file)
 
-    if (uploadError) {
-      throw uploadError
-    }
+  //   if (uploadError) {
+  //     throw uploadError
+  //   }
 
-    const { data } = supabase.storage.from("blog-assets").getPublicUrl(filePath)
+  //   const { data } = supabase.storage.from("blog-assets").getPublicUrl(filePath)
 
-    return data.publicUrl
-  }
+  //   return data.publicUrl
+  // }
 
   const handleSubmit = async (status: "draft" | "published") => {
     if (!user) {
@@ -106,6 +106,13 @@ export function CreateBlogForm() {
     setIsLoading(true)
 
     try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (!session?.access_token) {
+        throw new Error("No valid session found. Please log in again.")
+      }
       // Create FormData for the API request
       const apiFormData = new FormData()
       apiFormData.append("title", formData.title)
@@ -123,6 +130,9 @@ export function CreateBlogForm() {
       // Make API request
       const response = await fetch("/api/admin/posts", {
         method: "POST",
+          headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: apiFormData,
       })
 
@@ -132,6 +142,7 @@ export function CreateBlogForm() {
       }
 
       const newPost = await response.json()
+      console.log(newPost)
 
       // Update the store with the new post
       const { invalidateCache, fetchPosts } = useBlogStore.getState()

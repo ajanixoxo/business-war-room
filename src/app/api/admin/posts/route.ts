@@ -1,22 +1,41 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@/lib/supabase"
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const supabase = createServerClient()
+    // Get the authorization header
+    const authHeader = request.headers.get("authorization")
 
-    // Get current user
+    if (!authHeader) {
+      return NextResponse.json({ error: "No authorization header" }, { status: 401 })
+    }
+
+    // Create server client with the auth token
+    const serverSupabase = createServerClient()
+
+    // Set the auth header
+    const token = authHeader.replace("Bearer ", "")
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser()
+    } = await serverSupabase.auth.getUser(token)
 
     if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { data: posts, error } = await supabase
+    // Verify user has admin role
+    const { data: profile, error: profileError } = await serverSupabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single()
+
+    if (profileError || profile?.role !== "admin") {
+      return NextResponse.json({ error: "Unauthorized - Admin access required" }, { status: 401 })
+    }
+
+    const { data: posts, error } = await serverSupabase
       .from("posts")
       .select(`
         *,
@@ -30,22 +49,45 @@ export async function GET() {
 
     return NextResponse.json(posts)
   } catch (error) {
+    console.error("Error fetching posts:", error)
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createServerClient()
+    // Get the authorization header
+    const authHeader = request.headers.get("authorization")
 
-    // Get current user
+    if (!authHeader) {
+      return NextResponse.json({ error: "No authorization header" }, { status: 401 })
+    }
+
+    // Create server client
+    const serverSupabase = createServerClient()
+
+    // Get user from token
+    const token = authHeader.replace("Bearer ", "")
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser()
+    } = await serverSupabase.auth.getUser(token)
 
     if (authError || !user) {
+      console.error("Auth error:", authError)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    // Verify user has admin role
+    const { data: profile, error: profileError } = await serverSupabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .single()
+
+    if (profileError || profile?.role !== "admin") {
+      console.error("Profile error:", profileError)
+      return NextResponse.json({ error: "Unauthorized - Admin access required" }, { status: 401 })
     }
 
     const formData = await request.formData()
@@ -58,6 +100,11 @@ export async function POST(request: NextRequest) {
     const readTime = formData.get("readTime") as string
     const coverImage = formData.get("coverImage") as File
 
+    // Validate required fields
+    if (!title || !excerpt || !content || !category) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
     let coverImagePath = null
 
     if (coverImage && coverImage.size > 0) {
@@ -65,13 +112,14 @@ export async function POST(request: NextRequest) {
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
       const filePath = `blog-images/${fileName}`
 
-      const { error: uploadError } = await supabase.storage.from("blog-assets").upload(filePath, coverImage)
+      const { error: uploadError } = await serverSupabase.storage.from("blog-assets").upload(filePath, coverImage)
 
       if (uploadError) {
-        return NextResponse.json({ error: uploadError.message }, { status: 500 })
+        console.error("Upload error:", uploadError)
+        return NextResponse.json({ error: "Failed to upload image" }, { status: 500 })
       }
 
-      const { data } = supabase.storage.from("blog-assets").getPublicUrl(filePath)
+      const { data } = serverSupabase.storage.from("blog-assets").getPublicUrl(filePath)
       coverImagePath = data.publicUrl
     }
 
@@ -84,7 +132,7 @@ export async function POST(request: NextRequest) {
         .trim()
     }
 
-    const { data: post, error } = await supabase
+    const { data: post, error } = await serverSupabase
       .from("posts")
       .insert({
         title,
@@ -105,6 +153,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
+      console.error("Database error:", error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
