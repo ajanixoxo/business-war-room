@@ -43,7 +43,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Email</h4>
-                  <p className="text-muted-foreground">hello@businesswarroom.com</p>
+                  <p className="text-muted-foreground">projectcscore@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
@@ -52,7 +52,8 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Phone</h4>
-                  <p className="text-muted-foreground">+1 (555) 123-STRATEGY</p>
+                  <p className="text-muted-foreground">+44 7436036241‬
+</p>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
@@ -61,7 +62,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Schedule</h4>
-                  <p className="text-muted-foreground">Monday - Friday, 9AM - 6PM EST</p>
+                  <p className="text-muted-foreground">Monday - Friday, 9AM - 6PM BST</p>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
@@ -70,7 +71,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Location</h4>
-                  <p className="text-muted-foreground">Global Strategic Operations</p>
+                  <p className="text-muted-foreground">London, United Kingdom</p>
                 </div>
               </div>
             </div>
