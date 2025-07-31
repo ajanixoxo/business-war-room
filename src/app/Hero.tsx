@@ -32,11 +32,11 @@ export default function Hero() {
           </div>
           <div className="mt-12 grid grid-cols-2 content-center place-items-center md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl font-bold text-accent mb-2 font-eukraine-light">500+</div>
+              <div className="text-3xl font-bold text-accent mb-2 font-eukraine-light">100+</div>
               <div className="text-sm text-muted-foreground font-eukraine-light">Battles Won</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-accent mb-2 font-eukraine-light">$2M+</div>
+              <div className="text-3xl font-bold text-accent mb-2 font-eukraine-light">$5M+</div>
               <div className="text-sm text-muted-foreground font-eukraine-light">Revenue Generated</div>
             </div>
             <div className="text-center col-span-2 md:col-span-1">

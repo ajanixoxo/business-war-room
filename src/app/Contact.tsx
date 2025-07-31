@@ -78,7 +78,7 @@ export default function Contact() {
             <div className="bg-accent/5 p-6 rounded-lg border border-accent/20">
               <h4 className="font-bold text-foreground mb-2">Free Strategy Call</h4>
               <p className="text-muted-foreground text-xs mb-4  font-eukraine-light">Book a complimentary 30-minute strategy session to discuss your business challenges.</p>
-              <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-xs font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-accent text-accent-foreground hover:bg-accent/90 shadow-tactical transform hover:scale-105 transition-all duration-300 h-10 px-4 py-2 w-full">Book Free Call</button>
+              <a href="https://calendly.com/bunmi-ascendia/30min?month=2025-05&date=2025-05-17" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-xs font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-accent text-accent-foreground hover:bg-accent/90 shadow-tactical transform hover:scale-105 transition-all duration-300 h-10 px-4 py-2 w-full">Book Free Call</a>
             </div>
           </div>
         </div>
