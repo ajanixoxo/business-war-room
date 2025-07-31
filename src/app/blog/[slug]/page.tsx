@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import { useEffect, useState } from "react"
@@ -132,8 +133,23 @@ export default function BlogPostPage() {
 
       {/* Hero Header Section */}
       <div className="relative">
-        <div className="aspect-[16/9] md:aspect-[21/9] bg-gradient-primary opacity-80"></div>
-        <div className="absolute inset-0 bg-black/40"></div>
+        {post.cover_image ? (
+          <div className="aspect-[16/9] md:aspect-[21/9] relative overflow-hidden">
+            <img
+              src={post.cover_image}
+              alt={post.title || "Blog post cover"}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/40"></div>
+          </div>
+        ) : (
+          <div>
+      <div className="aspect-[16/9] md:aspect-[21/9] bg-gradient-primary opacity-80"></div>
+      <div className="absolute inset-0 bg-black/40"></div>
+    </div>
+        )}
+        
 
         {/* Back Button */}
         <Link href="/" className="absolute top-6 left-6 z-10">
@@ -167,10 +183,10 @@ export default function BlogPostPage() {
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 <span>{new Date(post.created_at).toLocaleDateString("en-US", {
-                      month: "short", // "Dec"
-                      day: "numeric", // "5"
-                      year: "numeric" // "2025"
-                    })}</span>
+                  month: "short", // "Dec"
+                  day: "numeric", // "5"
+                  year: "numeric" // "2025"
+                })}</span>
               </div>
             </div>
           </div>

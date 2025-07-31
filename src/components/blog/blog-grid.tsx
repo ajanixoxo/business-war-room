@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import { Card } from "@/components/ui/card"
@@ -6,14 +7,13 @@ import { Badge } from "@/components/ui/badge"
 import { Clock, User, ArrowRight } from "lucide-react"
 import { useBlogStore } from "@/store/blog-store"
 import Link from "next/link"
-import Image from "next/image"
 
 export function BlogGrid() {
   const { posts, isLoading } = useBlogStore()
 
   // Filter published posts and exclude featured posts
   const publishedPosts = posts.filter((post) => post.status === "published" && post.type !== "featured")
-
+ console.log(publishedPosts)
   if (isLoading) {
     return (
       <section className="py-16">
@@ -42,7 +42,7 @@ export function BlogGrid() {
             <Card className="l gap-3 pt-0 border-0">
               <div className="aspect-video relative">
                 {post.cover_image ? (
-                  <Image src={post.cover_image || "/placeholder.svg"} alt={post.title} fill className="object-cover" />
+                  <img src={post.cover_image || "/placeholder.svg"} alt={post.title}  className="object-cover" />
                 ) : (
                   <div className="w-full h-full bg-gradient-primary opacity-80"></div>
                 )}

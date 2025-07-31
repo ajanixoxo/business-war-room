@@ -384,7 +384,7 @@ export function EditBlogForm({ post }: EditBlogFormProps) {
                   </div>
                 </div>
 
-                {/* <div>
+                 <div>
                   <Label htmlFor="coverImage">Cover Image</Label>
                   {formData.currentCoverImage && (
                     <div className="mt-2 mb-2">
@@ -418,7 +418,7 @@ export function EditBlogForm({ post }: EditBlogFormProps) {
                           : "Upload Cover Image"}
                     </Button>
                   </div>
-                </div> */}
+                </div> 
               </CardContent>
             </Card>
 
