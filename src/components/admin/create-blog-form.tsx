@@ -268,7 +268,7 @@ export function CreateBlogForm() {
                   </div>
                 </div>
 
-                <div className="hidden">
+                <div className="">
                   <Label htmlFor="coverImage">Cover Image</Label>
                   <div className="mt-2">
                     <input

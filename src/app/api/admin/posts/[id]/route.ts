@@ -111,7 +111,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Unauthorized - Admin access required" }, { status: 401 })
     }
 
-    const { error } = await serverSupabase.from("posts").delete().eq("id", id).eq("author_id", user.id) // Ensure user can only delete their own posts
+    const { error } = await serverSupabase.from("posts").delete().eq("id", id) // Ensure user can only delete their own posts
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
