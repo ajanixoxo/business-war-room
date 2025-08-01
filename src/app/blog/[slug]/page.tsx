@@ -224,12 +224,12 @@ export default function BlogPostPage() {
             insights.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-tactical transform hover:scale-105 transition-all duration-300 h-11 rounded-md px-8">
+            <Link  href="https://calendly.com/bunmi-ascendia/30min?month=2025-05&date=2025-05-17" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-tactical transform hover:scale-105 transition-all duration-300 h-11 rounded-md px-8">
               Schedule Strategic Consultation
-            </Button>
-            <Button variant="outline" className="h-11 rounded-md px-8 bg-transparent border-accent text-accent">
+            </Link>
+            <Link href="mailto:mailto:bunmibalogun450@yahoo.com?subject=Download Full Framework&body=Hi, I'm interested in your Full Framework ."  className="h-11 rounded-md px-8 bg-transparent border-accent text-accent">
               Download Full Framework
-            </Button>
+            </Link>
           </div>
         </div>
       </article>

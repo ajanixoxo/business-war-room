@@ -220,11 +220,22 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       updateData.cover_image = coverImagePath
     }
 
+    // First check if post exists
+    const { data: existingPost, error: checkError } = await serverSupabase
+      .from("posts")
+      .select("id")
+      .eq("id", id)
+      .single()
+
+    if (checkError || !existingPost) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 })
+    }
+
+    // Update the post (admin can edit any post)
     const { data: post, error } = await serverSupabase
       .from("posts")
       .update(updateData)
-      .eq("id",id)
-      .eq("author_id", user.id) // Ensure user can only update their own posts
+      .eq("id", id)
       .select(`
         *,
         author:profiles(name, email)

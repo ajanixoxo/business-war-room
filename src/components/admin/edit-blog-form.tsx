@@ -360,7 +360,7 @@ export function EditBlogForm({ post }: EditBlogFormProps) {
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {["Technology", "Business", "Health", "Science", "Culture"].map((category) => (
+                        {["Strategy", "Growth", "Leadership", "Tactics", "Insights"].map((category) => (
                           <SelectItem key={category} value={category}>
                             {category}
                           </SelectItem>

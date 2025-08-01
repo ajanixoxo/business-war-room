@@ -40,9 +40,9 @@ export function BlogGrid() {
         {publishedPosts.map((post) => (
           <Link key={post.id} href={`/blog/${post.slug}`} className="rounded-lg  border-accent/20 bg-card text-card-foreground shadow-sm group overflow-hidden hover:shadow-command transition-all duration-300 cursor-pointer">
             <Card className="l gap-3 pt-0 border-0">
-              <div className="aspect-video relative">
+              <div className="aspect-square relative">
                 {post.cover_image ? (
-                  <img src={post.cover_image || "/placeholder.svg"} alt={post.title}  className="object-cover" />
+                  <img src={post.cover_image || "/placeholder.svg"} alt={post.title}  className="w-full aspect-square object-cover" />
                 ) : (
                   <div className="w-full h-full bg-gradient-primary opacity-80"></div>
                 )}

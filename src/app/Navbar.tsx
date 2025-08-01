@@ -88,7 +88,7 @@ export default function Navbar() {
             </Link>
 
             <a
-              href="https://forms.gle/qH5DFWGTrdNMxuDx7"
+              href="https://calendly.com/bunmi-ascendia/30min?month=2025-05&date=2025-05-17"
               className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-10 px-4 py-2 font-eukraine-regular"
             >
               Enter War Room
