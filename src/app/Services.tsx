@@ -188,12 +188,12 @@ const Services: React.FC<ServicesProps> = ({  onConsultationClick }) => {
         </div>
         
         <div className="text-center mt-16">
-          <button 
+          <a href="https://calendly.com/bunmi-ascendia/30min?month=2025-05&date=2025-05-17"
             onClick={onConsultationClick}
             className="inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-11 rounded-md text-base text-normal px-8 py-6 font-eukraine-regular"
           >
             Schedule Strategic Consultation
-          </button>
+          </a>
         </div>
       </div>
     </section>

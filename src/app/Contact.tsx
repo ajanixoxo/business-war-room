@@ -1,4 +1,40 @@
+'use client';
+import React from "react";
+
 export default function Contact() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    // Get form data
+    const formData = new FormData(e.currentTarget);
+    const fullName = formData.get('fullName');
+    const email = formData.get('email');
+    const company = formData.get('company');
+    const challenge = formData.get('challenge');
+    
+    // Create email subject and body
+    const subject = encodeURIComponent('Strategic Session Request - Business War Room');
+    const body = encodeURIComponent(`Hello,
+
+I would like to request a strategic session. Here are my details:
+
+Full Name: ${fullName}
+Email: ${email}
+Company/Startup: ${company || 'Not specified'}
+
+Business Challenge:
+${challenge}
+
+Best regards,
+${fullName}`);
+    
+    // Create mailto link
+    const mailtoLink = `mailto:info@businesswarroom.io?subject=${subject}&body=${body}`;
+    
+    // Open mail app
+    window.location.href = mailtoLink;
+  };
+
   return (
     <section id="contact" className="py-20 bg-card">
       <div className="container mx-auto px-6">
@@ -10,24 +46,52 @@ export default function Contact() {
           <div className="rounded-lg border text-card-foreground shadow-sm bg-secondary border-border">
             <div className="p-8">
               <h3 className="text-2xl font-bold text-foreground mb-6 font-eukraine-regular">Enter the War Room</h3>
-              <form className="space-y-6 font-eukraine-regular">
+              <form className="space-y-6 font-eukraine-regular" onSubmit={handleSubmit}>
                 <div>
                   <label className="block text-xs font-medium text-foreground mb-2">Full Name *</label>
-                  <input type="text" className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:border-accent focus:outline-none transition-colors text-sm font-eukraine-light" placeholder="Your name" />
+                  <input 
+                    type="text" 
+                    name="fullName"
+                    required
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:border-accent focus:outline-none transition-colors text-sm font-eukraine-light" 
+                    placeholder="Your name" 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-foreground mb-2">Email Address *</label>
-                  <input type="email" className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:border-accent focus:outline-none transition-colors  text-sm font-eukraine-light" placeholder="your@email.com" />
+                  <input 
+                    type="email" 
+                    name="email"
+                    required
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:border-accent focus:outline-none transition-colors text-sm font-eukraine-light" 
+                    placeholder="your@email.com" 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-foreground mb-2">Company/Startup</label>
-                  <input type="text" className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:border-accent focus:outline-none transition-colors text-sm font-eukraine-light" placeholder="Your company name" />
+                  <input 
+                    type="text" 
+                    name="company"
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:border-accent focus:outline-none transition-colors text-sm font-eukraine-light" 
+                    placeholder="Your company name" 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-foreground mb-2">Business Challenge *</label>
-                  <textarea rows={4} className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:border-accent focus:outline-none transition-colors text-sm resize-none font-eukraine-light" placeholder="Tell us about your biggest business challenge..."></textarea>
+                  <textarea 
+                    rows={4} 
+                    name="challenge"
+                    required
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:border-accent focus:outline-none transition-colors text-sm resize-none font-eukraine-light" 
+                    placeholder="Tell us about your biggest business challenge..."
+                  ></textarea>
                 </div>
-                <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-10 px-4 w-full text-base py-6 text-normal font-semibold">Request Strategic Session</button>
+                <button 
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-gradient-primary text-primary-foreground hover:shadow-command transform hover:scale-105 transition-all duration-300 h-10 px-4 w-full text-base py-6 text-normal font-semibold"
+                >
+                  Request Strategic Session
+                </button>
               </form>
             </div>
           </div>
@@ -43,7 +107,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Email</h4>
-                  <p className="text-muted-foreground">projectcscore@gmail.com</p>
+                  <p className="text-muted-foreground">info@businesswarroom.io</p>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
@@ -52,8 +116,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Phone</h4>
-                  <p className="text-muted-foreground">+44 7436036241‬
-</p>
+                  <p className="text-muted-foreground">+44 7436036241‬</p>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
@@ -71,13 +134,13 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Location</h4>
-                  <p className="text-muted-foreground">London, United Kingdom</p>
+                  <p className="text-muted-foreground">London, United Kingdom</p>
                 </div>
               </div>
             </div>
             <div className="bg-accent/5 p-6 rounded-lg border border-accent/20">
               <h4 className="font-bold text-foreground mb-2">Free Strategy Call</h4>
-              <p className="text-muted-foreground text-xs mb-4  font-eukraine-light">Book a complimentary 30-minute strategy session to discuss your business challenges.</p>
+              <p className="text-muted-foreground text-xs mb-4 font-eukraine-light">Book a complimentary 30-minute strategy session to discuss your business challenges.</p>
               <a href="https://calendly.com/bunmi-ascendia/30min?month=2025-05&date=2025-05-17" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-xs font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-accent text-accent-foreground hover:bg-accent/90 shadow-tactical transform hover:scale-105 transition-all duration-300 h-10 px-4 py-2 w-full">Book Free Call</a>
             </div>
           </div>
@@ -85,4 +148,4 @@ export default function Contact() {
       </div>
     </section>
   );
-} 
+}
