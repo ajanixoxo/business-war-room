@@ -13,8 +13,28 @@ export function NewsletterSignup() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle newsletter signup
-    console.log("Newsletter signup:", email)
+    
+    if (!email) return;
+    
+    // Create email subject and body
+    const subject = encodeURIComponent('Newsletter Subscription Request - Strategic Command Network');
+    const body = encodeURIComponent(`Hello,
+
+I would like to subscribe to the Strategic Command Network newsletter.
+
+Email: ${email}
+
+Please add me to your mailing list for exclusive intelligence reports, tactical frameworks, and strategic insights.
+
+Best regards`);
+    
+    // Create mailto link
+    const mailtoLink = `mailto:info@businesswarroom.io?subject=${subject}&body=${body}`;
+    
+    // Open mail app
+    window.location.href = mailtoLink;
+    
+    // Clear the email field
     setEmail("")
   }
 
