@@ -134,22 +134,20 @@ export default function BlogPostPage() {
       {/* Hero Header Section */}
       <div className="relative">
         {post.cover_image ? (
-          <div className="aspect-[16/9] md:aspect-[21/9] relative overflow-hidden">
-            <img
-              src={post.cover_image}
-              alt={post.title || "Blog post cover"}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover"
-            />
+          <div 
+            className="aspect-[16/9] md:aspect-[21/9] bg-cover bg-center bg-no-repeat"
+            style={{ 
+              backgroundImage: `url(${post.cover_image})` 
+            }}
+          >
             <div className="absolute inset-0 bg-black/40"></div>
           </div>
         ) : (
-          <div>
-      <div className="aspect-[16/9] md:aspect-[21/9] bg-gradient-primary opacity-80"></div>
-      <div className="absolute inset-0 bg-black/40"></div>
-    </div>
+          <div className="relative">
+            <div className="aspect-[16/9] md:aspect-[21/9] bg-gradient-primary opacity-80"></div>
+            <div className="absolute inset-0 bg-black/40"></div>
+          </div>
         )}
-        
 
         {/* Back Button */}
         <Link href="/" className="absolute top-6 left-6 z-10">
